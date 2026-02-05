@@ -1,0 +1,11 @@
+# Screenshots
+screenshots/
+
+# Claude Code
+.claude/
+
+# Playwright
+.playwright-mcp/
+
+# macOS
+.DS_Store
