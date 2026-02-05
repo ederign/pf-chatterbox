@@ -1,0 +1,253 @@
+import React from 'react';
+import { createRoot } from 'react-dom/client';
+import { VictoryBar, VictoryChart, VictoryAxis, VictoryLabel } from 'victory';
+import './css/patternfly.min.css';
+import './css/report.css';
+import { REPORT_DATA } from './report-data.js';
+
+const e = React.createElement;
+const data = REPORT_DATA;
+
+function toggleTheme() {
+    const html = document.documentElement;
+    html.classList.toggle('pf-v6-theme-dark');
+    html.classList.toggle('pf-v6-theme-light');
+}
+
+const App = e('div', { className: 'pf-v6-c-page' },
+    // Masthead
+    e('header', { className: 'pf-v6-c-masthead' },
+        e('div', { className: 'pf-v6-c-masthead__main' },
+            e('div', { className: 'pf-v6-c-masthead__brand' },
+                e('a', { className: 'pf-v6-c-masthead__logo', href: '#' },
+                    e('div', { className: 'brand-icon' }, 'G'),
+                    e('span', { style: { marginLeft: '12px', fontWeight: 600 } }, 'Garak Security')
+                )
+            )
+        ),
+        e('div', { className: 'pf-v6-c-masthead__content' },
+            e('button', {
+                className: 'theme-toggle',
+                type: 'button',
+                onClick: toggleTheme
+            },
+                e('svg', { width: 14, height: 14, viewBox: '0 0 16 16', fill: 'currentColor' },
+                    e('path', { d: 'M8 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6zm0 1a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8z' })
+                ),
+                'Toggle Theme'
+            )
+        )
+    ),
+
+    // Main Content
+    e('main', { className: 'pf-v6-c-page__main' },
+        // Page Section - Header
+        e('section', { className: 'pf-v6-c-page__main-section pf-m-light' },
+            e('div', { className: 'pf-v6-c-content' },
+                e('h1', { className: 'pf-v6-c-title pf-m-2xl' }, 'Red Teaming Report'),
+                e('p', null, 'Report ID: ', e('code', null, data.reportId))
+            ),
+            // Label Group
+            e('div', { className: 'pf-v6-c-label-group', style: { marginTop: '16px' } },
+                e('div', { className: 'pf-v6-c-label-group__main' },
+                    e('ul', { className: 'pf-v6-c-label-group__list' },
+                        e('li', { className: 'pf-v6-c-label-group__list-item' },
+                            e('span', { className: 'pf-v6-c-label pf-m-blue' },
+                                e('span', { className: 'pf-v6-c-label__content' }, 'Probe: ' + data.probe)
+                            )
+                        ),
+                        e('li', { className: 'pf-v6-c-label-group__list-item' },
+                            e('span', { className: 'pf-v6-c-label pf-m-gold' },
+                                e('span', { className: 'pf-v6-c-label__content' }, data.summary.scenarios + ' Scenarios')
+                            )
+                        )
+                    )
+                )
+            )
+        ),
+
+        // Page Section - Stats
+        e('section', { className: 'pf-v6-c-page__main-section' },
+            e('div', { className: 'stats-grid' },
+                // Scenarios Card
+                e('div', { className: 'pf-v6-c-card' },
+                    e('div', { className: 'pf-v6-c-card__body' },
+                        e('div', { className: 'stat-value stat-value--info' }, data.summary.scenarios),
+                        e('div', { className: 'stat-label' }, 'Scenarios')
+                    )
+                ),
+                // Generations Card
+                e('div', { className: 'pf-v6-c-card' },
+                    e('div', { className: 'pf-v6-c-card__body' },
+                        e('div', { className: 'stat-value stat-value--info' }, data.summary.generations),
+                        e('div', { className: 'stat-label' }, 'Generations')
+                    )
+                ),
+                // Complied Card
+                e('div', { className: 'pf-v6-c-card' },
+                    e('div', { className: 'pf-v6-c-card__body' },
+                        e('div', { className: 'stat-value stat-value--danger' }, data.summary.complied),
+                        e('div', { className: 'stat-label' }, 'Complied')
+                    )
+                ),
+                // Refused Card
+                e('div', { className: 'pf-v6-c-card' },
+                    e('div', { className: 'pf-v6-c-card__body' },
+                        e('div', { className: 'stat-value stat-value--success' }, data.summary.refused),
+                        e('div', { className: 'stat-label' }, 'Refused')
+                    )
+                )
+            ),
+
+            // Charts Row
+            e('div', { className: 'charts-grid' },
+                // Bar Chart Card
+                e('div', { className: 'pf-v6-c-card' },
+                    e('div', { className: 'pf-v6-c-card__header' },
+                        e('div', { className: 'pf-v6-c-card__title' },
+                            e('h2', { className: 'pf-v6-c-title pf-m-lg' }, 'Behavior by Attack Strategy')
+                        )
+                    ),
+                    e('div', { className: 'pf-v6-c-card__body' },
+                        e('div', { className: 'chart-wrapper' },
+                            e(VictoryChart, {
+                                domainPadding: { x: 60 },
+                                height: 240,
+                                width: 380,
+                                padding: { top: 20, bottom: 60, left: 45, right: 20 }
+                            },
+                                e(VictoryAxis, {
+                                    tickLabelComponent: e(VictoryLabel, { angle: -20, textAnchor: 'end', dy: -3 }),
+                                    style: { tickLabels: { fontSize: 9, fill: '#6a6e73' }, axis: { stroke: '#d2d2d2' } }
+                                }),
+                                e(VictoryAxis, {
+                                    dependentAxis: true,
+                                    tickFormat: t => Number.isInteger(t) ? t : '',
+                                    style: { tickLabels: { fontSize: 9, fill: '#6a6e73' }, axis: { stroke: '#d2d2d2' }, grid: { stroke: '#eee' } }
+                                }),
+                                e(VictoryBar, {
+                                    data: [{ x: 'Complied', y: data.summary.complied }, { x: 'Refused', y: data.summary.refused }],
+                                    style: { data: { fill: ({ datum }) => datum.x === 'Complied' ? '#c9190b' : '#3e8635', width: 30 } },
+                                    labels: ({ datum }) => datum.y,
+                                    labelComponent: e(VictoryLabel, { dy: -5, style: { fontSize: 10 } })
+                                })
+                            )
+                        )
+                    ),
+                    e('div', { className: 'pf-v6-c-card__footer' },
+                        e('div', { className: 'chart-legend' },
+                            e('div', { className: 'chart-legend__item' },
+                                e('span', { className: 'chart-legend__dot', style: { background: '#c9190b' } }),
+                                'Complied'
+                            ),
+                            e('div', { className: 'chart-legend__item' },
+                                e('span', { className: 'chart-legend__dot', style: { background: '#3e8635' } }),
+                                'Refused'
+                            )
+                        )
+                    )
+                ),
+
+                // Horizontal Bar Chart - Scenario Outcomes
+                e('div', { className: 'pf-v6-c-card' },
+                    e('div', { className: 'pf-v6-c-card__header' },
+                        e('div', { className: 'pf-v6-c-card__title' },
+                            e('h2', { className: 'pf-v6-c-title pf-m-lg' }, 'Scenario Outcomes')
+                        )
+                    ),
+                    e('div', { className: 'pf-v6-c-card__body' },
+                        e('div', { className: 'chart-wrapper' },
+                            e(VictoryChart, {
+                                horizontal: true,
+                                height: Math.max(200, data.scenarios.length * 32),
+                                width: 420,
+                                padding: { top: 10, bottom: 30, left: 110, right: 40 },
+                                domainPadding: { x: 15 }
+                            },
+                                e(VictoryAxis, {
+                                    style: {
+                                        tickLabels: { fontSize: 9, fill: '#6a6e73' },
+                                        axis: { stroke: '#d2d2d2' }
+                                    }
+                                }),
+                                e(VictoryAxis, {
+                                    dependentAxis: true,
+                                    tickFormat: () => '',
+                                    style: { axis: { stroke: '#d2d2d2' }, grid: { stroke: '#eee' } }
+                                }),
+                                e(VictoryBar, {
+                                    data: data.scenarios.map(s => ({
+                                        x: s.intent,
+                                        y: s.generations,
+                                        fill: s.outcome === 'complied' ? '#c9190b' : '#3e8635'
+                                    })),
+                                    style: { data: { fill: ({ datum }) => datum.fill } },
+                                    barWidth: 18,
+                                    labels: ({ datum }) => datum.y,
+                                    labelComponent: e(VictoryLabel, { dx: 5, style: { fontSize: 9, fill: '#6a6e73' } })
+                                })
+                            )
+                        )
+                    ),
+                    e('div', { className: 'pf-v6-c-card__footer' },
+                        e('div', { className: 'chart-legend' },
+                            e('div', { className: 'chart-legend__item' },
+                                e('span', { className: 'chart-legend__dot', style: { background: '#c9190b' } }),
+                                'Complied'
+                            ),
+                            e('div', { className: 'chart-legend__item' },
+                                e('span', { className: 'chart-legend__dot', style: { background: '#3e8635' } }),
+                                'Refused'
+                            )
+                        )
+                    )
+                )
+            ),
+
+            // Table Card
+            e('div', { className: 'pf-v6-c-card' },
+                e('div', { className: 'pf-v6-c-card__header' },
+                    e('div', { className: 'pf-v6-c-card__title' },
+                        e('h2', { className: 'pf-v6-c-title pf-m-lg' }, 'Scenario Details')
+                    )
+                ),
+                e('div', { className: 'pf-v6-c-card__body', style: { padding: 0 } },
+                    e('table', { className: 'pf-v6-c-table pf-m-grid-md', role: 'grid' },
+                        e('thead', { className: 'pf-v6-c-table__thead' },
+                            e('tr', { className: 'pf-v6-c-table__tr', role: 'row' },
+                                e('th', { className: 'pf-v6-c-table__th', role: 'columnheader', scope: 'col' }, 'Scenario'),
+                                e('th', { className: 'pf-v6-c-table__th', role: 'columnheader', scope: 'col' }, 'Intent'),
+                                e('th', { className: 'pf-v6-c-table__th', role: 'columnheader', scope: 'col' }, 'Generations'),
+                                e('th', { className: 'pf-v6-c-table__th', role: 'columnheader', scope: 'col' }, 'Outcome')
+                            )
+                        ),
+                        e('tbody', { className: 'pf-v6-c-table__tbody', role: 'rowgroup' },
+                            data.scenarios.map((s, i) =>
+                                e('tr', { className: 'pf-v6-c-table__tr', role: 'row', key: i },
+                                    e('td', { className: 'pf-v6-c-table__td', role: 'cell', 'data-label': 'Scenario' },
+                                        e('strong', null, s.name)
+                                    ),
+                                    e('td', { className: 'pf-v6-c-table__td', role: 'cell', 'data-label': 'Intent' },
+                                        e('code', null, s.intent)
+                                    ),
+                                    e('td', { className: 'pf-v6-c-table__td', role: 'cell', 'data-label': 'Generations' }, s.generations),
+                                    e('td', { className: 'pf-v6-c-table__td', role: 'cell', 'data-label': 'Outcome' },
+                                        e('span', {
+                                            className: 'pf-v6-c-label ' + (s.outcome === 'complied' ? 'pf-m-red' : 'pf-m-green')
+                                        },
+                                            e('span', { className: 'pf-v6-c-label__content' },
+                                                s.outcome === 'complied' ? 'Complied' : 'Refused'
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    )
+);
+
+createRoot(document.getElementById('app')).render(App);

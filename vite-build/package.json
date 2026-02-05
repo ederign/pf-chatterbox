@@ -1,0 +1,23 @@
+{
+  "name": "pf-chatterbox",
+  "version": "1.0.0",
+  "description": "A PatternFly 6 styled HTML report for visualizing Garak red teaming results.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "vite": "^6.4.1",
+    "vite-plugin-singlefile": "^2.3.0"
+  },
+  "dependencies": {
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "victory": "^37.3.6"
+  }
+}

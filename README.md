@@ -28,7 +28,7 @@ A PatternFly 6 styled HTML report for visualizing Garak red teaming results.
 
 ```
 pf-chatterbox/
-├── index.html                    # Main report page
+├── index.html                    # Main report page (static version)
 ├── assets/
 │   ├── css/
 │   │   ├── patternfly.min.css    # PatternFly 6 styles
@@ -39,13 +39,33 @@ pf-chatterbox/
 │       ├── react-dom.min.js      # ReactDOM 18
 │       ├── victory.min.js        # Victory charts
 │       └── report-data.js        # Report data
+├── vite-build/                   # Bundled single-file version
+│   ├── src/
+│   │   ├── main.js               # App entry point
+│   │   ├── report-data.js        # Report data (ESM)
+│   │   └── css/                  # Styles
+│   ├── index.html                # Vite entry
+│   ├── vite.config.js            # Vite config
+│   └── dist/index.html           # Built single-file output
 └── .gitignore
 ```
 
 ## Usage
 
+### Static Version
 1. Open `index.html` directly in a browser
 2. Or visit the [GitHub Pages demo](https://ederign.github.io/pf-chatterbox/)
+
+### Bundled Single-File Version
+Build a fully self-contained HTML file with all CSS, JS, and fonts inlined:
+
+```bash
+cd vite-build
+npm install
+npm run build
+```
+
+Output: `vite-build/dist/index.html` (~2.3MB, works offline via file://)
 
 ### Customizing Data
 
