@@ -1,39 +1,76 @@
 # Garak Security Report
 
-A PatternFly-styled HTML report for Garak red teaming results.
+A PatternFly 6 styled HTML report for visualizing Garak red teaming results.
+
+**Live Demo:** https://ederign.github.io/pf-chatterbox/
+
+## Features
+
+- Light/dark theme toggle
+- Summary statistics cards
+- Bar chart showing Complied vs Refused counts
+- Horizontal bar chart showing scenario outcomes
+- Responsive data table with results
+- Works as a standalone HTML file (no server required)
+
+## PatternFly Components
+
+| Component | Usage |
+|-----------|-------|
+| Masthead | Dark header with branding |
+| Page | Overall layout structure |
+| Card | Stats, charts, and table containers |
+| Table | Scenario details |
+| Label | Status badges and tags |
+| Title | Section headings |
+
+## Project Structure
+
+```
+pf-chatterbox/
+├── index.html                    # Main report page
+├── assets/
+│   ├── css/
+│   │   ├── patternfly.min.css    # PatternFly 6 styles
+│   │   ├── report.css            # Custom report styles
+│   │   └── assets/fonts/         # Red Hat fonts
+│   └── js/
+│       ├── react.min.js          # React 18
+│       ├── react-dom.min.js      # ReactDOM 18
+│       ├── victory.min.js        # Victory charts
+│       └── report-data.js        # Report data
+└── .gitignore
+```
+
+## Usage
+
+1. Open `index.html` directly in a browser
+2. Or visit the [GitHub Pages demo](https://ederign.github.io/pf-chatterbox/)
+
+### Customizing Data
+
+Edit `assets/js/report-data.js` to change the report data:
+
+```javascript
+const REPORT_DATA = {
+  "reportId": "your-report-id",
+  "probe": "probe.Name",
+  "summary": { "scenarios": 8, "generations": 34, "complied": 5, "refused": 3 },
+  "scenarios": [
+    { "name": "Scenario Name", "intent": "S001code", "generations": 5, "outcome": "complied" },
+    // ...
+  ]
+};
+```
 
 ## Dependencies
 
 | Library | Version | Purpose |
 |---------|---------|---------|
-| PatternFly | 6.1.0 | CSS framework |
+| PatternFly | 6.x | UI component styles |
 | React | 18.x | UI rendering |
-| ReactDOM | 18.x | DOM rendering |
-| Victory | 37.x | Charts (used by PatternFly) |
+| Victory | 37.x | Chart visualizations |
 
-## Files
+## License
 
-```
-pf-chatterbox/
-├── test_report.html      # Main report
-├── report-data.json      # Data (optional, embedded in HTML)
-└── assets/
-    ├── css/
-    │   └── patternfly.min.css
-    └── js/
-        ├── react.min.js
-        ├── react-dom.min.js
-        └── victory.min.js
-```
-
-## Usage
-
-Open `test_report.html` in a browser. Works offline.
-
-## Features
-
-- Dark/light theme toggle
-- Summary stats cards
-- Bar chart (Complied vs Refused)
-- Scatter chart (by scenario)
-- Data table with results
+MIT
